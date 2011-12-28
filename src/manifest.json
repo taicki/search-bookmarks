@@ -1,0 +1,15 @@
+{
+  "name": "Search Bookmarks",
+  "version": "0.1",
+  "omnibox": {
+    "keyword": "bm"
+  },
+  "background_page": "background.html",
+  "icons": {
+    "16": "omnibox_star.png"
+  },
+  "permissions": [
+    "bookmarks",
+    "tabs"
+  ]
+}
