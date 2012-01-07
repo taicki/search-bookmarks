@@ -27,7 +27,12 @@ chrome.omnibox.onInputChanged.addListener(
 
 chrome.omnibox.onInputEntered.addListener(function(text){
   chrome.tabs.getSelected(null, function(tab) {
-    chrome.tabs.update(tab.id, {url: text});
+    if (text.match(/(^|\s)https?:\/\//i)) {
+      var url = text;
+    } else {
+      var url = "chrome://bookmarks/#q=" + text
+    }
+    chrome.tabs.update(tab.id, {url: url});
   });
 });
 
