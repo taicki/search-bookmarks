@@ -1,3 +1,11 @@
+String.prototype.escapeHTML = function() {
+  return this.replace(/&/g, '&amp;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+};
+
 function search(term, callback) {
   chrome.bookmarks.search(term, function(results) {
     callback(results);
@@ -17,7 +25,7 @@ chrome.omnibox.onInputChanged.addListener(
       for (var i = 0, entry; i < 5 && (node = nodes[i]); i++) {
         results.push({
           content: node.url,
-          description: node.title
+          description: node.title.escapeHTML()
         });
       }
       suggest(results);
