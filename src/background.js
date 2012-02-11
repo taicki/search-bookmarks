@@ -40,7 +40,7 @@ chrome.omnibox.onInputEntered.addListener(function(text){
     } else {
       var url = "chrome://bookmarks/#q=" + text
     }
-    chrome.tabs.update(tab.id, {url: url});
+    chrome.tabs.update(tab.id, {url: url, selected: true});
   });
 });
 
