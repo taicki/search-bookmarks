@@ -25,7 +25,9 @@ chrome.omnibox.onInputChanged.addListener(
       for (var i = 0, entry; i < 5 && (node = nodes[i]); i++) {
         results.push({
           content: node.url,
-          description: node.title.escapeHTML()
+          description:
+            "<url>" + node.url.escapeHTML() + "</url> - <dim>"
+            + node.title.escapeHTML() + "</dim>"
         });
       }
       suggest(results);
@@ -38,7 +40,7 @@ chrome.omnibox.onInputEntered.addListener(function(text){
     if (text.match(/(^|\s)https?:\/\//i)) {
       var url = text;
     } else {
-      var url = "chrome://bookmarks/#q=" + text
+      var url = "chrome://bookmarks/#q=" + text;
     }
     chrome.tabs.update(tab.id, {url: url, selected: true});
   });
