@@ -1,3 +1,5 @@
+MAX_LENGTH = 100
+
 String.prototype.escapeHTML = function() {
   return this.replace(/&/g, '&amp;')
     .replace(/>/g, '&gt;')
@@ -26,6 +28,12 @@ function formatMatch(re, text) {
 
 function formatResult(terms, url, title) {
   var re = new RegExp('(' + terms.join('|') + ')', 'ig');
+  if (url.length > MAX_LENGTH) {
+    url = url.substr(0, MAX_LENGTH) + ' ...';
+  }
+  if (title.length > MAX_LENGTH) {
+    title = title.substr(0, MAX_LENGTH) + ' ...';
+  }
   var urlResult = formatMatch(re, url).escapeHTML();
   var titleResult = formatMatch(re, title).escapeHTML();
   return "<url>" + urlResult + "</url> - <dim>" + titleResult + "</dim>";
