@@ -22,20 +22,21 @@ function resetDefaultSuggestion() {
   });
 }
 
+function formatString(text) {
+  if (text.length > MAX_LENGTH) {
+    return text.substr(0, MAX_LENGTH) + '...';
+  }
+  return text;
+}
+
 function formatMatch(re, text) {
   return text.replace(re, "<match>$1</match>")
 }
 
 function formatResult(terms, url, title) {
   var re = new RegExp('(' + terms.join('|') + ')', 'ig');
-  if (url.length > MAX_LENGTH) {
-    url = url.substr(0, MAX_LENGTH) + ' ...';
-  }
-  if (title.length > MAX_LENGTH) {
-    title = title.substr(0, MAX_LENGTH) + ' ...';
-  }
-  var urlResult = formatMatch(re, url).escapeHTML();
-  var titleResult = formatMatch(re, title).escapeHTML();
+  var urlResult = formatMatch(re, formatString(url)).escapeHTML();
+  var titleResult = formatMatch(re, formatString(title)).escapeHTML();
   return "<url>" + urlResult + "</url> - <dim>" + titleResult + "</dim>";
 }
 
