@@ -1,14 +1,18 @@
+MAX_LENGTH = 100
+
 String.prototype.escapeHTML = function() {
   return this.replace(/&/g, '&amp;')
     .replace(/>/g, '&gt;')
     .replace(/</g, '&lt;')
     .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
+    .replace(/'/g, '&apos;')
+    .replace(/&lt;match&gt;/g, '<match>')
+    .replace(/&lt;\/match&gt;/g, '</match>');
 };
 
 function search(term, callback) {
   chrome.bookmarks.search(term, function(results) {
-    callback(results);
+    callback(term, results);
   });
 }
 
@@ -18,16 +22,33 @@ function resetDefaultSuggestion() {
   });
 }
 
+function formatString(text) {
+  if (text.length > MAX_LENGTH) {
+    return text.substr(0, MAX_LENGTH) + '...';
+  }
+  return text;
+}
+
+function formatMatch(re, text) {
+  return text.replace(re, "<match>$1</match>")
+}
+
+function formatResult(terms, url, title) {
+  var re = new RegExp('(' + terms.join('|') + ')', 'ig');
+  var urlResult = formatMatch(re, formatString(url)).escapeHTML();
+  var titleResult = formatMatch(re, formatString(title)).escapeHTML();
+  return "<url>" + urlResult + "</url> - <dim>" + titleResult + "</dim>";
+}
+
 chrome.omnibox.onInputChanged.addListener(
   function (text, suggest) {
-    search(text, function(nodes) {
+    search(text, function(term, nodes) {
+      var terms = term.split(/\s/);
       var results = [];
       for (var i = 0, entry; i < 5 && (node = nodes[i]); i++) {
         results.push({
           content: node.url,
-          description:
-            "<url>" + node.url.escapeHTML() + "</url> - <dim>"
-            + node.title.escapeHTML() + "</dim>"
+          description: formatResult(terms, node.url, node.title)
         });
       }
       suggest(results);
