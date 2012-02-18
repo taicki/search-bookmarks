@@ -1,6 +1,6 @@
 {
   "name": "Search Bookmarks",
-  "version": "0.3",
+  "version": "0.3.5",
   "omnibox": {
     "keyword": "bm"
   },
