@@ -18,7 +18,7 @@ function search(term, callback) {
 
 function resetDefaultSuggestion() {
   chrome.omnibox.setDefaultSuggestion({
-    description: 'Search Bookmarks'
+    description: 'Search bookmarks for <match>%s</match>'
   });
 }
 
