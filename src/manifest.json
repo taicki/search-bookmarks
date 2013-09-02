@@ -1,15 +1,26 @@
 {
+  "manifest_version": 2,
+
   "name": "Search Bookmarks",
-  "version": "0.3.7",
+  "description": "Enables searching your bookmarks from Omnibox",
+  "version": "0.3.8",
+
   "omnibox": {
     "keyword": "bm"
   },
-  "background_page": "background.html",
+
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+
   "icons": {
     "16": "omnibox_star.png",
     "48": "bookmark_section_48.png",
     "128": "bookmark_section_128.png"
   },
+
   "permissions": [
     "bookmarks",
     "tabs"
